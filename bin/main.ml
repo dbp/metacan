@@ -20,7 +20,7 @@ let () =
   @@ Dream.set_secret (Sys.getenv "COOKIE_KEY")
   @@ Dream.flash
   @@ Dream.cookie_sessions
-  @@ Dream.sql_pool (Sys.getenv "POSTGRES")
+  @@ Dream.sql_pool (Sys.getenv "DATABASE_URL")
   @@ Dream.router [
 
     Dream.post "/dump"
