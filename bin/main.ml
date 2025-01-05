@@ -33,7 +33,7 @@ let () =
               |> Option.some
           with _ -> None with
         | None ->
-          Dream.log "Error: Missing fields";
+          Dream.log "Error: Missing or invalid fields -- %s" body;
           Dream.json "ERROR"
         | Some m ->
           if m.key = key then
