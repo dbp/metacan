@@ -40,10 +40,8 @@ let () =
               main [class_ "container-fluid"] [
                 table [class_ "striped"] [
                   thead [] [tr [] [th [] [txt "Email"];
-                                   th [] [txt "Date"];
                                    th [] [txt "Content"]]];
-                  tbody [] (courses |> List.map (fun c -> tr [] [td [] [txt "%s" (c.email)];
-                                                              td [] [txt "%s" (c.time)];
+                  tbody [] (courses |> List.map (fun c -> tr [] [td [] [span [string_attr "data-tooltip" "%s - %s" c.assignment c.time] [txt "%s" c.email]];
                                                               td [] [pre [] [txt "%s" (c.content)]]]))
                 ]
               ]
