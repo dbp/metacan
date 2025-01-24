@@ -9,7 +9,7 @@ RUN eval $(opam env)
 WORKDIR /build
 
 RUN opam switch create 5.1.1
-RUN opam install --yes dune dream dotenv ppx_deriving ppx_sexp_conv ppx_rapper ppx_rapper_lwt ppx_yojson_conv caqti-driver-postgresql
+RUN opam install --yes dune dream dream-html dotenv ppx_deriving ppx_sexp_conv ppx_rapper ppx_rapper_lwt ppx_yojson_conv caqti-driver-postgresql
 
 # Build project.
 ADD . .

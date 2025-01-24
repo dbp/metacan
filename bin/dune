@@ -1,7 +1,7 @@
 (executable
  (public_name metacan)
  (name main)
- (libraries dream dotenv ppx_rapper_lwt caqti-driver-postgresql)
+ (libraries dream dream-html dotenv ppx_rapper_lwt caqti-driver-postgresql)
  (preprocess
   (pps lwt_ppx ppx_rapper ppx_yojson_conv ppx_deriving.show ppx_deriving.eq)))
 

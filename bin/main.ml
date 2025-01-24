@@ -23,6 +23,35 @@ let () =
   @@ Dream.sql_pool (Sys.getenv "DATABASE_URL")
   @@ Dream.router [
 
+    Dream.get "/query/:key"
+      (fun request ->
+        match%lwt
+          Dream.sql request ([%rapper get_many {sql|
+               SELECT @string{key}, @string{email}, @string{assignment}, @string{time}, @string{content}, @string{results}, @string{other} FROM meta JOIN query ON meta.id = ANY (query.metas) WHERE query.key = %string{key} |sql} record_out] ~key:(Dream.param request "key")) with
+        | Ok courses ->
+          let open Dream_html in
+          let open HTML in
+          Dream_html.respond (html [lang "en"] [
+            head [] [
+              link [rel "stylesheet"; href "https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"];
+              style [type_ "text/css"] "table td, table td * {vertical-align: top;}";
+            ];
+            body [] [
+              main [class_ "container-fluid"] [
+                table [class_ "striped"] [
+                  thead [] [tr [] [th [] [txt "Email"];
+                                   th [] [txt "Date"];
+                                   th [] [txt "Content"]]];
+                  tbody [] (courses |> List.map (fun c -> tr [] [td [] [txt "%s" (c.email)];
+                                                              td [] [txt "%s" (c.time)];
+                                                              td [] [pre [] [txt "%s" (c.content)]]]))
+                ]
+              ]
+            ]
+          ])
+        | Error err ->
+          Dream.log "Error %s" (Caqti_error.show err);
+          Dream.html "");
     Dream.post "/dump"
       (fun request ->
         let%lwt body = Dream.body request in
